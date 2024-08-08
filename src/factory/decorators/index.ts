@@ -27,7 +27,13 @@ function Controller (): (target: unknown, propertyKey: string, descriptor: Prope
                 const result = await originalMethod.apply(this, [req, res, next]);
                 res.json({data: result, status: 'success'});
             } catch (error) {
-                res.status(500).json({error: error?.message, status: 'error'});
+                if( error instanceof Error ) {
+                    res.status(500).json({error: error.message, status: 'error'});
+                } else if( typeof error === 'string' ) {
+                    res.status(500).json({error, status: 'error'});
+                } else {
+                    res.status(500).json({error: 'An unknown error occurred', status: 'error'});
+                }
             }
         };
 
