@@ -1,55 +1,56 @@
-import { NextFunction, Request, Response } from 'express';
-import { CustomRouteT } from '../types/factory';
+import {ControllerArgsT, CustomRouteT} from './types/factory';
+import {Controller} from "./decorators";
 
 class BaseModule {
     moduleName: string = '';
     constructor() {
         this.moduleName = this.constructor.name;
+
+        this.create = this.create.bind(this);
+        this.readAll = this.readAll.bind(this);
         this.read = this.read.bind(this);
+        this.update = this.update.bind(this);
+        this.delete = this.delete.bind(this);
     }
     customRoutes: CustomRouteT[] = [];
+
     // Create operation
-    async create(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            
-            // Create Entity
-            const entity = req.body;
-            // Store into the DB
-            res.json(entity);
-        } catch (error) {
-            next(error);
-        }
-        
+    @Controller()
+    async create({req}: ControllerArgsT): Promise<object> {
+        // Create Entity
+        return req.body;
     }
 
-    // // Read operation
-    async read(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            // Implement your read logic here
-            res.json({ message: 'Read From: ' + this.moduleName });
-        } catch (error) {
-            next(error);
-        }
-        
+    // Read All operation
+    @Controller()
+    async readAll(): Promise<object> {
+        return { message: 'Read From: ' + this.moduleName };
     }
 
-    // async readSingle(req: Request, res: Response) {
-    //     // Implement your read single logic here
-    // }
+    // Read Single operation
+    @Controller()
+    async read({req}: ControllerArgsT): Promise<object> {
+        // Read Entity
+        return { message: 'Read Single From: ' + this.moduleName, params: req.params };
+    }
 
-    // // Update operation
-    // async update(req: Request, res: Response) {
-    //     // Implement your update logic here
-    // }
+    // Update operation
+    @Controller()
+    async update({req}: ControllerArgsT): Promise<object> {
+        // Update Entity
+        return { message: 'Update From: ' + this.moduleName, params: req.params, body: req.body };
+    }
 
-    // // Delete operation
-    // async delete(req: Request, res: Response) {
-    //     // Implement your delete logic here
-    // }
+    // Delete operation
+    @Controller()
+    async delete({req}: ControllerArgsT): Promise<object> {
+        // Delete Entity
+        return { message: 'Delete From: ' + this.moduleName, params: req.params };
+    }
 
     // // Custom operation
-    registerRoute({ path, method, handler }: CustomRouteT): void {
-        this.customRoutes.push({ path, method, handler });   
+    protected registerRoute({ path, method, handler }: CustomRouteT): void {
+        this.customRoutes.push({ path, method, handler });
     }
 }
 

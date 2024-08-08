@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from "express";
 import BaseModule from "../factory/BaseModule";
+import {Controller} from "../factory/decorators";
 
 class Product extends BaseModule {
 
@@ -8,12 +8,10 @@ class Product extends BaseModule {
         this.registerRoute({ path: '/all', method: 'GET', handler: this.getAll });
     }
 
-    async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            res.json({ message: 'Get All' });
-        } catch (error) {
-            next(error);
-        }
+    @Controller()
+    async getAll(): Promise<object> {
+        // Your method logic
+        return { message: 'Get All Products' };
     }
 
 }

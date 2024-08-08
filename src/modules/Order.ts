@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from "express";
 import BaseModule from "../factory/BaseModule";
+import {Controller} from "../factory/decorators";
 
 class Order extends BaseModule{
 
@@ -12,14 +12,11 @@ class Order extends BaseModule{
         })
     }
 
-    async myOrders(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            res.json({ message: 'My Orders' });
-        } catch (error) {
-            next(error);
-        }
+    @Controller()
+    async myOrders(): Promise<object> {
+        return { message: 'Get MY Orders' };
     }
 
-};
+}
 
 export default Order;
