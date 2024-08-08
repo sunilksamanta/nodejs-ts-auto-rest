@@ -2,7 +2,7 @@
  * Decorators for the factory pattern
  */
 
-import {Request, Response, NextFunction, Errback} from "express";
+import {Request, Response, NextFunction} from "express";
 
 /**
  * A decorator for controller methods in an Express application.
