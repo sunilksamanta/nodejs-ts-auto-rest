@@ -2,6 +2,8 @@ import express, { Request, Response, Express } from 'express';
 
 const app: Express = express();
 const port: number = process.env.PORT ? Number(process.env.PORT) : 3000;
+import mongoose from 'mongoose';
+mongoose.connect('mongodb://localhost:27017/test');
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello, TypeScript with Express!');

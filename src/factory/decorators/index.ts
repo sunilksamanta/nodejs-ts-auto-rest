@@ -4,6 +4,7 @@
 
 import {Request, Response, NextFunction} from "express";
 
+
 /**
  * A decorator for controller methods in an Express application.
  *
@@ -27,6 +28,7 @@ function Controller (): (target: unknown, propertyKey: string, descriptor: Prope
                 const result = await originalMethod.apply(this, [req, res, next]);
                 res.json({data: result, status: 'success'});
             } catch (error) {
+                console.error(error);
                 if( error instanceof Error ) {
                     res.status(500).json({error: error.message, status: 'error'});
                 } else if( typeof error === 'string' ) {

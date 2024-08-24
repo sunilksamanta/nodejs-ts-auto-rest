@@ -5,4 +5,6 @@ export interface ControllerArgsT {
     res: Response;
     next: NextFunction
 }
+
+export interface GenericObjectT{ [key: string]: unknown };
 export interface CustomRouteT { path: string, method: RestMethod, handler: ({ req, res, next }: ControllerArgsT) => Promise<unknown> }
